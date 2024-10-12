@@ -6,7 +6,7 @@ import 'package:book_app/models/book_model.dart';
 import 'package:book_app/notifiers/app_book_explore.dart';
 import 'package:book_app/pages/book_show/detail_book.dart';
 import 'package:book_app/services/book_services.dart';
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

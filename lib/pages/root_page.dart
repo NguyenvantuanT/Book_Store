@@ -1,5 +1,5 @@
 import 'package:book_app/notifiers/app_root_notifier.dart';
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

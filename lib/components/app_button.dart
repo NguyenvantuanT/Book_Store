@@ -1,4 +1,5 @@
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/components/app_box_shadow.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -8,10 +9,22 @@ class AppButton extends StatelessWidget {
     this.text = "text",
     this.icon,
     this.height = 45.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(15.0)),
     this.bgColor = AppColors.bgColor,
     this.boderColor = AppColors.black,
+    this.borderRadius = const BorderRadius.all(Radius.circular(15.0)),
     this.padding = const EdgeInsets.symmetric(horizontal: 12.0),
+  });
+
+  const AppButton.ouline({
+    super.key,
+    this.onTap,
+    this.text = "text",
+    this.icon,
+    this.height = 45.0,
+    this.bgColor = AppColors.bgColor,
+    this.boderColor = AppColors.black,
+    this.borderRadius = const BorderRadius.all(Radius.circular(12.0)),
+    this.padding = const EdgeInsets.symmetric(horizontal: 24.0),
   });
 
   final Function()? onTap;
@@ -30,19 +43,23 @@ class AppButton extends StatelessWidget {
       child: Container(
         height: height,
         padding: padding,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: AppColors.bgColor,
           border: Border.all(color: AppColors.black),
           borderRadius: borderRadius,
+          boxShadow: AppBoxShadow.boxShadow
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) ...[
               icon!,
-              const SizedBox(width: 4.6),
+              const SizedBox(width: 4.0),
             ],
             Text(
               text,
+              textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
                   .titleLarge!

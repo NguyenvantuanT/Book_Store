@@ -2,7 +2,7 @@ import 'package:book_app/components/app_button.dart';
 import 'package:book_app/models/book_model.dart';
 import 'package:book_app/notifiers/app_setting_notifier.dart';
 import 'package:book_app/pages/book_show/pdf_screen.dart';
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -151,7 +151,6 @@ class DetailBook extends StatelessWidget {
   }
 }
 
-// Extracted Widgets
 class _BookCoverImage extends StatelessWidget {
   const _BookCoverImage({required this.imageUrl});
   final String imageUrl;

@@ -1,6 +1,6 @@
 import 'package:book_app/components/app_button.dart';
 import 'package:book_app/notifiers/app_pdf_notifier.dart';
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:provider/provider.dart';

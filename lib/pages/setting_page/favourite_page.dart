@@ -1,5 +1,5 @@
 import 'package:book_app/notifiers/app_setting_notifier.dart';
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,17 +21,27 @@ class FavouritePage extends StatelessWidget {
           final favBook = value.favoriteBooks;
           return ListView.separated(
             itemCount: favBook.length,
-            separatorBuilder: (_, __) =>  const Divider(color: AppColors.discount, indent: 18.0, endIndent: 18.0,),
+            separatorBuilder: (_, __) => const Divider(
+              color: AppColors.discount,
+              indent: 18.0,
+              endIndent: 18.0,
+            ),
             itemBuilder: (context, index) {
               final book = favBook[index];
               return ListTile(
                 leading: Image.network(
                   book.thumbnailUrl,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.error),
+                  errorBuilder: (_, __, ___) => const Icon(Icons.error),
                 ),
-                title: Text(book.title , style: Theme.of(context).textTheme.headlineMedium,),
-                subtitle: Text(book.authors[0] , style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColors.grey)),
+                title: Text(
+                  book.title,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                subtitle: Text(book.authors[0],
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(color: AppColors.grey)),
                 trailing: GestureDetector(
                   onTap: () => value.removeBook(book),
                   child: const Icon(Icons.favorite, color: Colors.red),
@@ -44,5 +54,3 @@ class FavouritePage extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,5 +1,5 @@
 import 'package:book_app/pages/setting_page/favourite_page.dart';
-import 'package:book_app/themes/app_colors.dart';
+import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SettinsPage extends StatefulWidget {
@@ -24,7 +24,6 @@ class _SettinsPageState extends State<SettinsPage> {
       {
         'icon': Icons.download,
         'title': 'Downloads',
-        // 'function': () => _pushPage(const DownloadsRoute()),
       },
       {
         'icon': Icons.mode,
@@ -34,12 +33,10 @@ class _SettinsPageState extends State<SettinsPage> {
       {
         'icon':Icons.info,
         'title': 'About',
-        // 'function': () => showAbout(),
       },
       {
         'icon': Icons.file_copy_outlined,
         'title': 'Open Source Licenses',
-        // 'function': () => _pushPage(const LicensesRoute()),
       },
     ];
   }
