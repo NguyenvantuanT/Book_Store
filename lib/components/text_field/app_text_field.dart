@@ -23,6 +23,7 @@ class AppTextField extends StatelessWidget {
   final Icon? prefixIcon;
   final Function(String)? onFieldSubmitted;
   final FormFieldValidator<String>? validator;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,10 +33,9 @@ class AppTextField extends StatelessWidget {
           height: 50.0,
           width: size.width,
           decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            color: AppColors.primaryC,
-            boxShadow: AppBoxShadow.boxShadow
-          ),
+              borderRadius: borderRadius,
+              color: AppColors.primaryC,
+              boxShadow: AppBoxShadow.boxShadow),
         ),
         TextFormField(
           cursorHeight: 20.0,
@@ -46,9 +46,19 @@ class AppTextField extends StatelessWidget {
             hintText: hintText,
             labelText: labelText,
             border: OutlineInputBorder(borderRadius: borderRadius),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Colors.grey.withOpacity(0.3),
+                width: 1.2,
+              ),
+            ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: const BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                color: Colors.black,
+                width: 1.2,
+              ),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 40.0),
             hintStyle: const TextStyle(color: Colors.grey, fontSize: 18.0),

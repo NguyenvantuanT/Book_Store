@@ -1,3 +1,4 @@
+
 abstract class FieldValidator<T> {
   final String errorText;
   FieldValidator(this.errorText);
@@ -21,6 +22,47 @@ abstract class TextFormValidator extends FieldValidator<String> {
 
   bool hasMatch(String pattern, String input, {bool caseSensitive = true}) =>
       RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
+}
+
+class EmailValidator extends TextFormValidator {
+  final Pattern _emailPattern =
+      r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
+
+  EmailValidator({required String errorText}) : super(errorText);
+
+  @override
+  bool get ignoreEmptyValues => false;
+
+  @override
+  bool isValid(String? value) {
+    return hasMatch(_emailPattern.toString(), value!, caseSensitive: false);
+  }
+}
+
+class PhoneValidator extends TextFormValidator {
+  final Pattern _phoneRegex = r'^0[0-9]{9}$';
+
+  PhoneValidator({required String errorText}) : super(errorText);
+
+  @override
+  bool get ignoreEmptyValues => false;
+
+  @override
+  bool isValid(String? value) {
+    return hasMatch(_phoneRegex.toString(), value!, caseSensitive: false);
+  }
+}
+
+
+class MatchValidator extends TextFormValidator {
+  final String? password;
+
+  MatchValidator(this.password, {required String errorText}) : super(errorText);
+
+  @override
+  bool isValid(String? value) {
+    return value == password;
+  }
 }
 
 class RequiredValidator extends TextFormValidator {

@@ -1,3 +1,4 @@
+import 'package:book_app/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:book_app/components/app_button.dart';
 import 'package:book_app/components/text_field/app_text_field.dart';
@@ -7,8 +8,8 @@ import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/validator.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
+  const LoginPage({super.key, this.username});
+  final String? username;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,12 +17,15 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Login"),
       ),
-      body: _LoginForm(),
+      body:  _LoginForm(username: username,),
     );
   }
 }
 
 class _LoginForm extends StatefulWidget {
+  const _LoginForm({Key? key, this.username}) : super(key: key);
+  final String? username;
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -42,6 +46,14 @@ class _LoginFormState extends State<_LoginForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.username != null) {
+      _usernameController.text = widget.username ?? "";
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: GestureDetector(
@@ -58,6 +70,8 @@ class _LoginFormState extends State<_LoginForm> {
                 _buildPasswordField(),
                 const SizedBox(height: 40.0),
                 _buildLoginButton(),
+                const SizedBox(height: 40.0),
+                _remoteRegister(context)
               ],
             ),
           ),
@@ -66,10 +80,24 @@ class _LoginFormState extends State<_LoginForm> {
     );
   }
 
+  Widget _remoteRegister(BuildContext context) {
+    return GestureDetector(
+        onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RegisterPage(),
+              ),
+            ),
+        child: Text(
+          "Register",
+          style: Theme.of(context).textTheme.headlineMedium,
+        ));
+  }
+
   Widget _buildUsernameField() {
     return AppTextField(
       controller: _usernameController,
-      prefixIcon: const Icon(Icons.person),
+      prefixIcon: const Icon(Icons.account_circle_rounded),
       hintText: "Username",
       labelText: "Username",
       validator: Validator.required,
@@ -79,7 +107,7 @@ class _LoginFormState extends State<_LoginForm> {
   Widget _buildPasswordField() {
     return AppTextFieldPass(
       controller: _passwordController,
-      prefixIcon: const Icon(Icons.password_outlined),
+      prefixIcon: const Icon(Icons.lock),
       hintText: "Password",
       labelText: "Password",
       validator: Validator.password,
@@ -90,17 +118,11 @@ class _LoginFormState extends State<_LoginForm> {
   Widget _buildLoginButton() {
     return FractionallySizedBox(
       widthFactor: 0.3,
-      child: AppButton(
+      child: AppButton.ouline(
         text: "Login",
         onTap: _submitLogin,
       ),
     );
   }
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 }

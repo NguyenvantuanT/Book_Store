@@ -53,19 +53,30 @@ class _AppTextFieldPassState extends State<AppTextFieldPass> {
             hintText: widget.hintText,
             labelText: widget.labelText,
             suffixIcon: GestureDetector(
-                onTap: () => setState(() => obscureText = !obscureText),
-                child: Icon(
-                  obscureText ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.grey,
-                )),
+              onTap: () => setState(() => obscureText = !obscureText),
+              child: Icon(
+                obscureText ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey,
+              ),
+            ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: widget.borderRadius,
-              borderSide: const BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                color: Colors.black,
+                width: 1.2,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Colors.grey.withOpacity(0.3),
+                width: 1.2,
+              ),
             ),
             prefixIconConstraints: const BoxConstraints(minWidth: 40.0),
             border: OutlineInputBorder(borderRadius: widget.borderRadius),
-            hintStyle: const TextStyle(color: Colors.grey, fontSize: 18.0),
-            labelStyle: const TextStyle(color: Colors.black, fontSize: 18.0),
+            hintStyle: const TextStyle(color: AppColors.textColor, fontSize: 18.0),
+            labelStyle: const TextStyle(color: AppColors.textColor, fontSize: 18.0),
           ),
           validator: widget.validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
