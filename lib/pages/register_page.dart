@@ -14,7 +14,8 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
-        title: const Text("Login"),
+        automaticallyImplyLeading: false,
+        title: const Text("Register"),
       ),
       body: _RegisterForm(),
     );
@@ -27,7 +28,7 @@ class _RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<_RegisterForm> {
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _confirmPasswordCtronller =
@@ -41,7 +42,7 @@ class _RegisterFormState extends State<_RegisterForm> {
         context,
         MaterialPageRoute(
           builder: (context) => LoginPage(
-            username: usernameController.text.trim(),
+            username: _usernameController.text.trim(),
           ),
         ),
       );
@@ -52,7 +53,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: GestureDetector(
-        onTap: FocusScope.of(context).unfocus,
+        onTap: () => FocusScope.of(context).unfocus(),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           child: Form(
@@ -102,8 +103,7 @@ class _RegisterFormState extends State<_RegisterForm> {
       prefixIcon: const Icon(Icons.lock),
       hintText: "Confirm password",
       labelText: "Confirm password",
-      validator:
-          Validator.confirmPassword(_passwordController.text.trim()),
+      validator: Validator.confirmPassword(_passwordController.text.trim()),
     );
   }
 
@@ -119,7 +119,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
   Widget _buildUsernameField() {
     return AppTextField(
-      controller: usernameController,
+      controller: _usernameController,
       prefixIcon: const Icon(Icons.account_circle_rounded),
       hintText: "Username",
       labelText: "Username",
@@ -139,7 +139,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
   Widget _buildRegisterButton() {
     return FractionallySizedBox(
-      widthFactor: 0.3,
+      widthFactor: 0.4,
       child: AppButton.ouline(
         text: "Register",
         onTap: _submitLogin,

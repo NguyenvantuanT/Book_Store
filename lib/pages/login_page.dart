@@ -15,9 +15,15 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Login"),
       ),
-      body:  _LoginForm(username: username,),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: _LoginForm(
+          username: username,
+        ),
+      ),
     );
   }
 }
@@ -56,24 +62,22 @@ class _LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: GestureDetector(
-        onTap: FocusScope.of(context).unfocus,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildUsernameField(),
-                const SizedBox(height: 20.0),
-                _buildPasswordField(),
-                const SizedBox(height: 40.0),
-                _buildLoginButton(),
-                const SizedBox(height: 40.0),
-                _remoteRegister(context)
-              ],
-            ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 100.0),
+              _buildUsernameField(),
+              const SizedBox(height: 20.0),
+              _buildPasswordField(),
+              const SizedBox(height: 40.0),
+              _buildLoginButton(),
+              const SizedBox(height: 40.0),
+              _remoteRegister(context)
+            ],
           ),
         ),
       ),
@@ -88,9 +92,21 @@ class _LoginFormState extends State<_LoginForm> {
                 builder: (context) => const RegisterPage(),
               ),
             ),
-        child: Text(
-          "Register",
-          style: Theme.of(context).textTheme.headlineMedium,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Don't hava account? ",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Text(
+              "Register",
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .copyWith(color: Colors.grey),
+            ),
+          ],
         ));
   }
 
@@ -124,5 +140,4 @@ class _LoginFormState extends State<_LoginForm> {
       ),
     );
   }
-
 }

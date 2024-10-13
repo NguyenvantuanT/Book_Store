@@ -43,7 +43,7 @@ class _SettinsPageState extends State<SettinsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryC,
+      backgroundColor: AppColors.bgColor,
       appBar: AppBar(
         title: Text(
           "Setting",
