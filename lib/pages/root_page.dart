@@ -3,70 +3,70 @@ import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RootPage extends StatelessWidget {
+class RootPage extends StatefulWidget {
   const RootPage({super.key});
 
   @override
+  State<RootPage> createState() => _RootPageState();
+}
+
+class _RootPageState extends State<RootPage> {
+  @override
   Widget build(BuildContext context) {
+    final notifier = Provider.of<AppRootNotifier>(context);
     return Scaffold(
-        backgroundColor: AppColors.bgColor,
-        body: Consumer<AppRootNotifier>(
-          builder: (context, value, child) {
-            return PageView.builder(
-                itemCount: 3,
-                controller: value.pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return FutureBuilder<Widget>(
-                    future: value.getPage(index),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return KeyedSubtree(
-                        key: ValueKey('page_$index'),
-                        child: snapshot.data ?? const SizedBox(),
-                      );
-                    },
-                  );
-                });
-          },
-        ),
-        bottomNavigationBar: Consumer<AppRootNotifier>(
-          builder: (context, value, child) {
-            return Container(
-              margin: const EdgeInsets.all(10.0),
-              decoration: const BoxDecoration(
-                  color: AppColors.bgColor,
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: BottomNavigationBar(
-                    backgroundColor: AppColors.textForBG,
-                    fixedColor: AppColors.textColor,
-                    unselectedItemColor: AppColors.grey.withOpacity(0.7),
-                    type: BottomNavigationBarType.fixed,
-                    currentIndex: value.selectIndex,
-                    onTap: value.setIndex,
-                    items: const [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.home_outlined),
-                        label: "Home",
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.explore_outlined),
-                        label: "Explore",
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.settings_outlined),
-                        label: "Settings",
-                      ),
-                    ]),
-              ),
-            );
-          },
-        ));
+      backgroundColor: AppColors.bgColor,
+      body: notifier.getPage(notifier.selectIndex),
+      bottomNavigationBar: _buildBottomNavigator(),
+    );
+  }
+
+  Widget _buildBottomNavigator() {
+    final notifier = Provider.of<AppRootNotifier>(context);
+
+    return AnimatedContainer(
+      height: 52.0,
+      duration: const Duration(milliseconds: 2000),
+      margin: EdgeInsets.only(
+        left: 20.0,
+        right: 20.0,
+        bottom: MediaQuery.of(context).padding.bottom + 15.0,
+      ),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(
+            3,
+            (index) => GestureDetector(
+                  onTap: () => notifier.setIndex(index),
+                  behavior: HitTestBehavior.translucent,
+                  child: Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      children: [
+                        Icon(
+                          notifier.getIcon(index),
+                          color: notifier.selectIndex == index
+                              ? AppColors.textColor
+                              : AppColors.grey.withOpacity(0.7),
+                        ),
+                        Text(
+                          notifier.getName(index),
+                          style: TextStyle(
+                            color: notifier.selectIndex == index
+                                ? AppColors.textColor
+                                : AppColors.grey.withOpacity(0.7),
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+      ),
+    );
   }
 }

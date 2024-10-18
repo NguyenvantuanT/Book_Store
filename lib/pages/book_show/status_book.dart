@@ -1,9 +1,12 @@
+import 'package:book_app/components/app_box_shadow.dart';
+import 'package:book_app/components/app_simmer.dart';
 import 'package:book_app/models/book_model.dart';
 import 'package:book_app/notifiers/app_book_explore.dart';
 import 'package:book_app/pages/book_show/detail_book.dart';
 import 'package:book_app/services/book_services.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +33,7 @@ class StatusBook extends StatefulWidget {
 
 class _StatusBookState extends State<StatusBook> {
   final ScrollController _scrollController = ScrollController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -130,8 +133,8 @@ class BookListItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Container(
-      padding: const EdgeInsets.all(10.0),
-      height: size.height / 4,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      height: size.height / 3,
       decoration: BoxDecoration(
         color: AppColors.textForBG,
         borderRadius: BorderRadius.circular(15.0),
@@ -139,10 +142,15 @@ class BookListItem extends StatelessWidget {
       child: GestureDetector(
         onTap: () => _navigateToDetail(context),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BookCoverImage(
-              thumbnailUrl: book.thumbnailUrl,
-              size: size,
+            SizedBox( 
+              height: size.height * 0.25,  
+              width: size.width * 0.30,    
+              child: BookCoverImage(
+                thumbnailUrl: book.thumbnailUrl,
+                size: size,
+              ),
             ),
             Expanded(
               child: Padding(
@@ -192,7 +200,7 @@ class BookDetails extends StatelessWidget {
           book.authors[0],
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style:  const TextStyle(
+          style: const TextStyle(
             color: AppColors.blue,
             fontSize: 13,
             fontWeight: FontWeight.w400,
@@ -223,35 +231,22 @@ class BookCoverImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.bgColor,
-        border: Border.all(color: AppColors.bgColor),
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadow,
-            offset: Offset(3.0, 3.0),
-            blurRadius: 6.0,
-          )
-        ],
-      ),
-      height: size.height * 0.4,
-      width: size.width * 0.30,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Image.network(
-          thumbnailUrl,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          errorBuilder: (context, error, stackTrace) =>
-              const Center(child: Icon(Icons.error)),
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const Center(child: CircularProgressIndicator());
-          },
+    return CachedNetworkImage(
+      imageUrl: thumbnailUrl,
+      imageBuilder: (context, imageProvider) => Container(
+        decoration: BoxDecoration(
+          color: AppColors.bgColor,
+          border: Border.all(color: AppColors.bgColor),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: AppBoxShadow.boxShadow,
+          image: DecorationImage(
+            image: imageProvider,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
+      placeholder: (_, __) => const AppSimmmer(),
+      errorWidget: (_, __, ___) => const AppSimmmer(),
     );
   }
 }
