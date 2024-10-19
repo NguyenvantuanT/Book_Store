@@ -1,8 +1,8 @@
 import 'package:book_app/notifiers/app_pdf_notifier.dart';
 import 'package:book_app/notifiers/app_root_notifier.dart';
 import 'package:book_app/notifiers/app_setting_notifier.dart';
+import 'package:book_app/notifiers/app_status_notifier.dart';
 import 'package:book_app/pages/login_page.dart';
-import 'package:book_app/services/book_services.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/themes/theme_text.dart';
 import 'package:flutter/material.dart';
@@ -16,16 +16,14 @@ void main() {
     statusBarIconBrightness: Brightness.dark,
   ));
   runApp(MultiProvider(providers: [
-    // ChangeNotifierProvider<AppNotifier>(create: (context) => AppNotifier()),
-    ChangeNotifierProvider<AppSettingNotifier>(create: (context) => AppSettingNotifier()),
+    ChangeNotifierProvider<AppSettingNotifier>(
+        create: (_) => AppSettingNotifier()),
+    ChangeNotifierProvider<AppStatusNotifier>(
+        create: (_) => AppStatusNotifier()),
     ChangeNotifierProvider<AppPdfNotifier>(
         create: (context) => AppPdfNotifier()),
     ChangeNotifierProvider<AppRootNotifier>(
         create: (context) => AppRootNotifier()),
-    Provider<BookService>(
-      create: (context) => BookService(),
-      dispose: (_, value) => value.dispose(),
-    ),
   ], child: const MyApp()));
 }
 

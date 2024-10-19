@@ -31,7 +31,6 @@ class Book {
   factory Book.fromJson(Map<String, dynamic> json) {
     var volumeInfo = json['volumeInfo'];
     var accessInfo = json['accessInfo'];
-
     return Book(
       id: json['id'] ?? 'No value',
       title: volumeInfo['title'] ?? 'No Title',

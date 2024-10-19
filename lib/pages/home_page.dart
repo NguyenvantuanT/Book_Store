@@ -1,7 +1,6 @@
 import 'package:book_app/components/app_search_box.dart';
-import 'package:book_app/notifiers/app_book_explore.dart';
+import 'package:book_app/notifiers/app_status_notifier.dart';
 import 'package:book_app/pages/book_show/status_book.dart';
-import 'package:book_app/services/book_services.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +12,6 @@ enum Status {
   actionAdventure, 
   novel,
   horror,
-}
-
-
-
-class HomePageWrapper extends StatelessWidget {
-  const HomePageWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ExploreProvider(context.read<BookService>())..loadMoreBooks(),
-      child: const HomePage(),
-    );
-  }
 }
 
 class HomePage extends StatefulWidget {
@@ -48,13 +33,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabController = TabController(
       length: Status.values.length,
       vsync: this,
-    );
+    )..addListener((){
+      Provider.of<AppStatusNotifier>(context,listen: false).updateView(_tabController.index);
+    } );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.read<ExploreProvider>().initTabController(_tabController);
-      }
-    });
   }
 
   @override
@@ -178,7 +160,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       controller: _tabController,
       children: List.generate(
         Status.values.length,
-        (index) => const CategoriesPage(),
+        (index) => const StatusBook(),
       ),
     );
   }

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class AppRootNotifier extends ChangeNotifier {
   final List<Widget> _pages = const [
-    HomePageWrapper(),
-    ExploreScreen(),
+    HomePage(),
+    ExplorePage(),
     SettinsPage(),
   ];
 

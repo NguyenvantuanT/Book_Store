@@ -1,49 +1,21 @@
-// lib/services/book_service.dart
-import 'dart:convert';
-import 'package:book_app/models/book_model.dart';
+import 'package:book_app/constants/app_constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:pretty_http_logger/pretty_http_logger.dart';
 
-class BookService {
-  static const String baseUrl = 'https://www.googleapis.com/books/v1/volumes';
-  final http.Client _client;
+abstract class ImplBookService{
+  Future<http.Response> getDataBook(String query, int startIndex , int maxResults);
+}
 
-  BookService({
-    http.Client? client,
-  }) : _client = client ?? http.Client();
+class BookService implements ImplBookService{
+   static final httpLog = HttpWithMiddleware.build(middlewares: [
+    HttpLogger(logLevel: LogLevel.BODY),
+  ]);
 
-  Future<List<Book>> fetchBooks({
-    required String query,
-    int startIndex = 0,
-    int maxResults = 20,
-  }) async {
-    try {
-      final response = await _client
-          .get(
-            Uri.parse(
-                '$baseUrl?q=$query&startIndex=$startIndex&maxResults=$maxResults'),
-          )
-          .timeout(
-            const Duration(seconds: 10),
-            onTimeout: () => throw Exception('Connection timeout'),
-          );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['items'] == null) return [];
-
-        final List<Book> books =
-            (data['items'] as List).map((item) => Book.fromJson(item)).toList();
-            
-        return books;
-      } else {
-        throw Exception('Failed to load books');
-      }
-    } catch (e) {
-      throw Exception('Error fetching books: $e');
-    }
+  @override
+  Future<http.Response> getDataBook(String query,int startIndex ,int maxResults ) async {
+    const base = AppConstants.baseBook;
+    final uri = "$base?q=$query&startIndex=$startIndex&maxResults=$maxResults";
+    return await http.get(Uri.parse(uri));
   }
-
-  void dispose() {
-    _client.close();
-  }
+  
 }
