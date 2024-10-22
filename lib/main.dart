@@ -2,6 +2,7 @@ import 'package:book_app/notifiers/app_pdf_notifier.dart';
 import 'package:book_app/notifiers/app_root_notifier.dart';
 import 'package:book_app/notifiers/app_setting_notifier.dart';
 import 'package:book_app/notifiers/app_status_notifier.dart';
+import 'package:book_app/pages/home/home_page.dart';
 import 'package:book_app/pages/login_page.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/themes/theme_text.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
             elevation: 0,
             titleTextStyle: TextStyle(color: Colors.black, fontSize: 22),
           )),
-      home: const LoginPage(),
+      home: const HomePage(),
     );
   }
 }

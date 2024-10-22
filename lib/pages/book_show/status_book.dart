@@ -1,56 +1,46 @@
-
 import 'package:book_app/components/app_box_shadow.dart';
 import 'package:book_app/components/app_simmer.dart';
 import 'package:book_app/models/book_model.dart';
-import 'package:book_app/notifiers/app_status_notifier.dart';
 import 'package:book_app/pages/book_show/detail_book.dart';
+import 'package:book_app/pages/home/home_vm.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-class StatusBook extends StatefulWidget {
-  const StatusBook({super.key});
+class StatusBook extends StackedView<HomeVm> {
+  const StatusBook(
+      {super.key,});
 
   @override
-  State<StatusBook> createState() => _StatusBookState();
-}
-
-class _StatusBookState extends State<StatusBook> {
+  void onViewModelReady(HomeVm viewModel) {
+    super.onViewModelReady(viewModel);
+    viewModel.init();
+  }
+  
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, HomeVm viewModel, Widget? child) {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
-      body: _buildBookList(),
+      body: ListView.separated(
+        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 8.0, 10.0),
+        shrinkWrap: true,
+        separatorBuilder: (_, __) => const SizedBox(height: 20),
+        itemCount: viewModel.books.length,
+        itemBuilder: (context, index) {
+          return BookListItem(book: viewModel.books[index]);
+        },
+      ),
     );
   }
-
-  Widget _buildBookList() {
-    return Consumer<AppStatusNotifier>(builder: (context, books, index) {
-      return FutureBuilder<List<Book>>(
-        future: books.fetchBooks(),
-        builder: (BuildContext context, AsyncSnapshot<List<Book>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 8.0, 10.0),
-            shrinkWrap: true,
-            separatorBuilder: (_, __) => const SizedBox(height: 20),
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final book = snapshot.data![index];
-              return BookListItem(book: book);
-            },
-          );
-        },
-      );
-    });
+  
+  @override
+  HomeVm viewModelBuilder(BuildContext context) {
+    return HomeVm();
   }
 }
+
 
 class BookListItem extends StatelessWidget {
   final Book book;

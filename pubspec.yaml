@@ -42,6 +42,7 @@ dependencies:
   shimmer: ^3.0.0
   cached_network_image: ^3.4.1
   pretty_http_logger: ^1.0.4
+  stacked: ^3.4.3
 
 dev_dependencies:
   flutter_test:

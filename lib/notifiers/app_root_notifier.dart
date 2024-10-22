@@ -1,5 +1,5 @@
 import 'package:book_app/pages/explore_page.dart';
-import 'package:book_app/pages/home_page.dart';
+import 'package:book_app/pages/home/home_page.dart';
 import 'package:book_app/pages/settins_page.dart';
 import 'package:flutter/material.dart';
 
