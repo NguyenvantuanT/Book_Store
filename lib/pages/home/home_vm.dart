@@ -12,7 +12,6 @@ class HomeVm extends BaseViewModel {
   final searchController = TextEditingController();
   bool isLoading = false;
   bool isLoad = false;
-  Status get status => _status;
   int currentIndex = 0;
 
   BookService bookService = BookService();
@@ -39,6 +38,7 @@ class HomeVm extends BaseViewModel {
     String query = _status.displayName;
     bookService.getDataBook(query, 0, 20).then((value) {
       books = value ?? [];
+      searchBooks = [...books];
       isLoading = false;
       search(searchController.text);
       rebuildUi();
@@ -50,13 +50,12 @@ class HomeVm extends BaseViewModel {
     });
   }
 
-
-
   void updateView(int index) {
     currentIndex = index;
     _status = Status.values[index];
     print(_status.displayName);
     getBooks();
     rebuildUi();
+
   }
 }

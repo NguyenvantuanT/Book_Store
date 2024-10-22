@@ -26,7 +26,7 @@ class HomePage extends StackedView<HomeVm> {
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             _buildStoreTitle(context),
-            _buildSearchBar(context),
+            _buildSearchBar(context, viewModel),
             _buildTopSellersTitle(context),
             _buildCategoryTabs(context, viewModel),
           ],
@@ -51,11 +51,14 @@ class HomePage extends StackedView<HomeVm> {
     );
   }
 
-  Widget _buildSearchBar(BuildContext context) {
-    return const SliverAppBar(
+  Widget _buildSearchBar(BuildContext context, HomeVm viewModel) {
+    return SliverAppBar(
       backgroundColor: AppColors.bgColor,
       toolbarHeight: 70.0,
-      flexibleSpace: AppSearchBox(),
+      flexibleSpace: AppSearchBox(
+        controller: viewModel.searchController,
+        onChanged: viewModel.search,
+      ),
     );
   }
 
@@ -121,37 +124,10 @@ class HomePage extends StackedView<HomeVm> {
   Widget _buildTabBarView(HomeVm viewModel) {
     return IndexedStack(
       index: viewModel.currentIndex,
-      children: [
-        ...List.generate(Status.values.length, (idx) => const StatusBook()),
-      ],
+      children: List.generate(
+        Status.values.length,
+        (idx) => StatusBook(viewModel.searchBooks),
+      ),
     );
   }
 }
-
-// class CategoryTabBarDelegate extends SliverPersistentHeaderDelegate {
-//   CategoryTabBarDelegate(this._tabBar);
-
-//   final Container _tabBar;
-
-//   @override
-//   double get minExtent => 20;
-
-//   @override
-//   double get maxExtent => 20;
-
-//   @override
-//   Widget build(
-//       BuildContext context, double shrinkOffset, bool overlapsContent) {
-//     return Container(
-//       color: AppColors.bgColor,
-//       child: _tabBar,
-//     );
-//   }
-
-//   @override
-//   bool shouldRebuild(CategoryTabBarDelegate oldDelegate) {
-//     return false;
-//   }
-// }
-
-

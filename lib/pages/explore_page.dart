@@ -2,7 +2,7 @@ import 'package:book_app/components/app_search_box.dart';
 import 'package:book_app/models/book_model.dart';
 import 'package:book_app/notifiers/app_status_notifier.dart';
 import 'package:book_app/pages/book_show/detail_book.dart';
-import 'package:book_app/pages/book_show/status_book.dart';
+import 'package:book_app/pages/home/widgets/app_image_book.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class _ExplorePageState extends State<ExplorePage> {
           preferredSize: const Size.fromHeight(40.0),
           child: AppSearchBox(
             controller: _controller,
-            onChange: (value) {},
+            onChanged: (value) {},
           ),
         ),
       ),

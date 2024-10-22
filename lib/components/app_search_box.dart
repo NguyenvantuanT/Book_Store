@@ -2,10 +2,9 @@ import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppSearchBox extends StatelessWidget {
-  const AppSearchBox({super.key, this.searchText, this.onChange, this.controller});
+  const AppSearchBox({super.key, this.onChanged, this.controller});
 
-  final String? searchText;
-  final Function(String?)? onChange;
+  final Function(String)? onChanged;
   final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class AppSearchBox extends StatelessWidget {
         ),
         child: TextField(
           controller: controller,
-          onChanged: onChange,
+          onChanged: onChanged,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 6.0),
             border: InputBorder.none,

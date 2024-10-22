@@ -2,6 +2,7 @@ import 'package:book_app/components/app_button.dart';
 import 'package:book_app/models/book_model.dart';
 import 'package:book_app/notifiers/app_setting_notifier.dart';
 import 'package:book_app/pages/book_show/pdf_screen.dart';
+import 'package:book_app/pages/home/widgets/app_image_book.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
 import 'package:flutter/material.dart';
@@ -50,13 +51,19 @@ class DetailBook extends StatelessWidget {
   }
 
   Widget _buildBookCover(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Positioned(
       top: 70.0,
       left: 0,
       right: 0,
       child: Container(
-          alignment: Alignment.center,
-          child: _BookCoverImage(imageUrl: book.thumbnailUrl)),
+        height: size.height / 3,
+        alignment: Alignment.center,
+        child: BookCoverImage(
+          thumbnailUrl: book.thumbnailUrl,
+          size: size,
+        ),
+      ),
     );
   }
 
@@ -246,7 +253,7 @@ class _BookDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String,String>> details = [
+    final List<Map<String, String>> details = [
       {'label': 'Author', 'value': book.authors[0]},
       {'label': 'Publisher', 'value': book.publisher},
       {'label': 'Publisher Date', 'value': book.publishedDate},

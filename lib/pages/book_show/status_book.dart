@@ -1,46 +1,63 @@
-import 'package:book_app/components/app_box_shadow.dart';
-import 'package:book_app/components/app_simmer.dart';
 import 'package:book_app/models/book_model.dart';
 import 'package:book_app/pages/book_show/detail_book.dart';
 import 'package:book_app/pages/home/home_vm.dart';
+import 'package:book_app/pages/home/widgets/app_image_book.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class StatusBook extends StackedView<HomeVm> {
   const StatusBook(
-      {super.key,});
+    this.books, {
+    super.key,
+  });
+
+  final List<Book> books;
+
+  @override
+  HomeVm viewModelBuilder(BuildContext context) => HomeVm();
 
   @override
   void onViewModelReady(HomeVm viewModel) {
     super.onViewModelReady(viewModel);
     viewModel.init();
   }
-  
+
   @override
   Widget builder(BuildContext context, HomeVm viewModel, Widget? child) {
     return Scaffold(
-      backgroundColor: AppColors.bgColor,
-      body: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 8.0, 10.0),
-        shrinkWrap: true,
-        separatorBuilder: (_, __) => const SizedBox(height: 20),
-        itemCount: viewModel.books.length,
-        itemBuilder: (context, index) {
-          return BookListItem(book: viewModel.books[index]);
-        },
-      ),
-    );
-  }
-  
-  @override
-  HomeVm viewModelBuilder(BuildContext context) {
-    return HomeVm();
+        backgroundColor: AppColors.bgColor,
+        body: viewModel.isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryD,
+                ),
+              )
+            : viewModel.searchBooks.isEmpty
+                ? Center(
+                    child: Text(
+                      viewModel.searchController.text.isEmpty
+                          ? 'Tasks is empty'
+                          : 'There is no result',
+                      style: const TextStyle(
+                          color: AppColors.blue, fontSize: 20.0),
+                    ),
+                  )
+                : SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10.0, 8.0, 10.0),
+                      shrinkWrap: true,
+                      separatorBuilder: (_, __) => const SizedBox(height: 20),
+                      itemCount: books.length,
+                      itemBuilder: (context, index) => BookListItem(
+                        book: books[index],
+                      ),
+                    ),
+                  ));
   }
 }
-
 
 class BookListItem extends StatelessWidget {
   final Book book;
@@ -141,36 +158,4 @@ class BookDetails extends StatelessWidget {
   }
 }
 
-class BookCoverImage extends StatelessWidget {
-  final String thumbnailUrl;
-  final Size size;
 
-  const BookCoverImage({
-    super.key,
-    required this.thumbnailUrl,
-    required this.size,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: thumbnailUrl,
-      imageBuilder: (context, imageProvider) => Container(
-        height: size.height,
-        width: size.width,
-        decoration: BoxDecoration(
-          color: AppColors.bgColor,
-          border: Border.all(color: AppColors.bgColor),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: AppBoxShadow.boxShadow,
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      placeholder: (_, __) => const AppSimmmer(),
-      errorWidget: (_, __, ___) => const AppSimmmer(),
-    );
-  }
-}
