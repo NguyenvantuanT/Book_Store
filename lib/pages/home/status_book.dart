@@ -38,10 +38,10 @@ class StatusBook extends StackedView<HomeVm> {
                 ? Center(
                     child: Text(
                       viewModel.searchController.text.isEmpty
-                          ? 'Tasks is empty'
+                          ? 'Books is empty'
                           : 'There is no result',
                       style: const TextStyle(
-                          color: AppColors.blue, fontSize: 20.0),
+                          color: AppColors.textColor, fontSize: 20.0),
                     ),
                   )
                 : SingleChildScrollView(

@@ -1,24 +1,26 @@
 import 'package:book_app/components/app_search_box.dart';
 import 'package:book_app/models/book_model.dart';
-import 'package:book_app/notifiers/app_status_notifier.dart';
 import 'package:book_app/pages/book_show/detail_book.dart';
+import 'package:book_app/pages/explore/explore_vm.dart';
 import 'package:book_app/pages/home/widgets/app_image_book.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-class ExplorePage extends StatefulWidget {
+class ExplorePage extends StackedView<ExploreVm> {
   const ExplorePage({super.key});
 
   @override
-  State<ExplorePage> createState() => _ExplorePageState();
-}
-
-class _ExplorePageState extends State<ExplorePage> {
-  final _controller = TextEditingController();
+  ExploreVm viewModelBuilder(BuildContext context) => ExploreVm();
 
   @override
-  Widget build(BuildContext context) {
+  void onViewModelReady(ExploreVm viewModel) {
+    super.onViewModelReady(viewModel);
+    viewModel.init();
+  }
+
+  @override
+  Widget builder(BuildContext context, ExploreVm viewModel, Widget? child) {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
@@ -30,52 +32,41 @@ class _ExplorePageState extends State<ExplorePage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(40.0),
           child: AppSearchBox(
-            controller: _controller,
-            onChanged: (value) {},
+            controller: viewModel.searchController,
+            onChanged: viewModel.search,
           ),
         ),
       ),
-      body: const BookGridView(),
+      body: viewModel.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryD,
+              ),
+            )
+          : viewModel.searchBooks.isEmpty
+              ? Center(
+                  child: Text(
+                    viewModel.searchController.text.isEmpty
+                        ? 'Books is empty'
+                        : 'There is no result',
+                    style:
+                        const TextStyle(color: AppColors.textColor, fontSize: 20.0),
+                  ),
+                )
+              : GridView.builder(
+                  padding: const EdgeInsets.all(8),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                  ),
+                  itemCount: viewModel.searchBooks.length,
+                  itemBuilder: (context, index) => BookCard(
+                    book: viewModel.searchBooks[index],
+                  ),
+                ),
     );
-  }
-}
-
-class BookGridView extends StatefulWidget {
-  const BookGridView({super.key});
-
-  @override
-  State<BookGridView> createState() => _BookGridViewState();
-}
-
-class _BookGridViewState extends State<BookGridView> {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AppStatusNotifier>(builder: (context, books, child) {
-      return FutureBuilder<List<Book>>(
-        future: books.fetchBooks(),
-        builder: (BuildContext context, AsyncSnapshot<List<Book>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final book = snapshot.data!;
-          return GridView.builder(
-            padding: const EdgeInsets.all(8),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.7,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-            ),
-            itemCount: book.length,
-            itemBuilder: (context, index) {
-              return BookCard(book: book[index]);
-            },
-          );
-        },
-      );
-    });
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:book_app/components/app_search_box.dart';
-import 'package:book_app/pages/book_show/status_book.dart';
+import 'package:book_app/pages/home/status_book.dart';
 import 'package:book_app/pages/home/home_vm.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_enum.dart';
