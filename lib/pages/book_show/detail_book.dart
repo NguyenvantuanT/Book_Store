@@ -1,13 +1,13 @@
 import 'package:book_app/components/app_button.dart';
 import 'package:book_app/models/book_model.dart';
-import 'package:book_app/notifiers/app_setting_notifier.dart';
 import 'package:book_app/pages/book_show/pdf_screen.dart';
 import 'package:book_app/pages/home/widgets/app_image_book.dart';
+import 'package:book_app/pages/setting/favourite_vm.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/utils/app_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+import 'package:stacked/stacked.dart';
 
 class DetailBook extends StatelessWidget {
   const DetailBook({super.key, required this.book});
@@ -158,43 +158,43 @@ class DetailBook extends StatelessWidget {
   }
 }
 
-class _BookCoverImage extends StatelessWidget {
-  const _BookCoverImage({required this.imageUrl});
-  final String imageUrl;
+// class _BookCoverImage extends StatelessWidget {
+//   const _BookCoverImage({required this.imageUrl});
+//   final String imageUrl;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height / 4,
-      width: MediaQuery.of(context).size.width / 3,
-      decoration: BoxDecoration(
-        color: AppColors.bgColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadow,
-            offset: Offset(3.0, 3.0),
-            blurRadius: 6.0,
-          )
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.error)),
-          loadingBuilder: (_, child, loadingProgress) {
-            return loadingProgress == null
-                ? child
-                : const Center(child: CircularProgressIndicator());
-          },
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: MediaQuery.of(context).size.height / 4,
+//       width: MediaQuery.of(context).size.width / 3,
+//       decoration: BoxDecoration(
+//         color: AppColors.bgColor,
+//         borderRadius: BorderRadius.circular(20),
+//         boxShadow: const [
+//           BoxShadow(
+//             color: AppColors.shadow,
+//             offset: Offset(3.0, 3.0),
+//             blurRadius: 6.0,
+//           )
+//         ],
+//       ),
+//       child: ClipRRect(
+//         borderRadius: BorderRadius.circular(20),
+//         child: Image.network(
+//           imageUrl,
+//           fit: BoxFit.cover,
+//           width: double.infinity,
+//           errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.error)),
+//           loadingBuilder: (_, child, loadingProgress) {
+//             return loadingProgress == null
+//                 ? child
+//                 : const Center(child: CircularProgressIndicator());
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _PriceTag extends StatelessWidget {
   const _PriceTag({required this.price});
@@ -219,29 +219,27 @@ class _PriceTag extends StatelessWidget {
   }
 }
 
-class _FavoriteButton extends StatelessWidget {
+class _FavoriteButton extends StackedView<FavouriteVm> {
   const _FavoriteButton({required this.book});
   final Book book;
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AppSettingNotifier>(
-      builder: (context, notifier, _) {
-        final isFavorite = notifier.isFavourite(book);
-        return AppButton(
-          icon: Icon(
-            isFavorite ? Icons.favorite : Icons.favorite_outline,
-            color: isFavorite ? AppColors.red : AppColors.black,
-          ),
-          text: "WISHLIST",
-          onTap: () {
-            if (isFavorite) {
-              notifier.removeBook(book);
-            } else {
-              notifier.addToFavoriteBook(book);
-            }
-          },
-        );
+  FavouriteVm viewModelBuilder(BuildContext context) => FavouriteVm();
+  @override
+  Widget builder(BuildContext context, FavouriteVm viewModel, Widget? child) {
+    final isFavorite = viewModel.isFavourite(book);
+    return AppButton(
+      icon: Icon(
+        isFavorite ? Icons.favorite : Icons.favorite_outline,
+        color: isFavorite ? AppColors.red : AppColors.black,
+      ),
+      text: "WISHLIST",
+      onTap: () {
+        if (isFavorite) {
+          viewModel.removeBook(book);
+        } else {
+          viewModel.addToFavoriteBook(book);
+        }
       },
     );
   }

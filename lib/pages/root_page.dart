@@ -1,29 +1,18 @@
-import 'package:book_app/notifiers/app_root_notifier.dart';
+import 'package:book_app/pages/root_vm.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-class RootPage extends StatefulWidget {
+class RootPage extends StackedView<RootVm> {
   const RootPage({super.key});
+  @override
+  RootVm viewModelBuilder(BuildContext context) => RootVm();
 
   @override
-  State<RootPage> createState() => _RootPageState();
-}
-
-class _RootPageState extends State<RootPage> {
-  @override
-  Widget build(BuildContext context) {
-    final notifier = Provider.of<AppRootNotifier>(context);
+  Widget builder(BuildContext context, RootVm viewModel, Widget? child) {
     return Scaffold(
-      backgroundColor: AppColors.bgColor,
-      body: notifier.getPage(notifier.selectIndex),
-      bottomNavigationBar: _buildBottomNavigator(),
-    );
-  }
-
-  Widget _buildBottomNavigator() {
-    return Consumer<AppRootNotifier>(builder: (_, notifier, ___) {
-      return AnimatedContainer(
+      body: viewModel.getPage(viewModel.selectIndex),
+      bottomNavigationBar: AnimatedContainer(
         height: 52.0,
         duration: const Duration(milliseconds: 2000),
         margin: EdgeInsets.only(
@@ -39,7 +28,7 @@ class _RootPageState extends State<RootPage> {
           children: List.generate(
               3,
               (index) => GestureDetector(
-                    onTap: () => notifier.setIndex(index),
+                    onTap: () => viewModel.setIndex(index),
                     behavior: HitTestBehavior.translucent,
                     child: Container(
                       color: Colors.white,
@@ -47,15 +36,15 @@ class _RootPageState extends State<RootPage> {
                       child: Column(
                         children: [
                           Icon(
-                            notifier.getIcon(index),
-                            color: notifier.selectIndex == index
+                            viewModel.getIcon(index),
+                            color: viewModel.selectIndex == index
                                 ? AppColors.textColor
                                 : AppColors.grey.withOpacity(0.7),
                           ),
                           Text(
-                            notifier.getName(index),
+                            viewModel.getName(index),
                             style: TextStyle(
-                              color: notifier.selectIndex == index
+                              color: viewModel.selectIndex == index
                                   ? AppColors.textColor
                                   : AppColors.grey.withOpacity(0.7),
                               fontSize: 12.0,
@@ -66,7 +55,7 @@ class _RootPageState extends State<RootPage> {
                     ),
                   )),
         ),
-      );
-    });
+      ),
+    );
   }
 }

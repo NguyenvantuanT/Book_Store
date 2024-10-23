@@ -1,8 +1,7 @@
 import 'package:book_app/notifiers/app_pdf_notifier.dart';
 import 'package:book_app/notifiers/app_root_notifier.dart';
 import 'package:book_app/notifiers/app_setting_notifier.dart';
-import 'package:book_app/pages/home/home_page.dart';
-import 'package:book_app/pages/login_page.dart';
+import 'package:book_app/pages/auth/login_page.dart';
 import 'package:book_app/pages/root_page.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/themes/theme_text.dart';
@@ -21,8 +20,6 @@ void main() {
         create: (_) => AppSettingNotifier()),
     ChangeNotifierProvider<AppPdfNotifier>(
         create: (context) => AppPdfNotifier()),
-    ChangeNotifierProvider<AppRootNotifier>(
-        create: (context) => AppRootNotifier()),
   ], child: const MyApp()));
 }
 

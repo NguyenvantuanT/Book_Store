@@ -2,8 +2,11 @@ import 'package:book_app/pages/explore/explore_page.dart';
 import 'package:book_app/pages/home/home_page.dart';
 import 'package:book_app/pages/setting/setting_page.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 
-class AppRootNotifier extends ChangeNotifier {
+class RootVm extends BaseViewModel{
+  int _selectIndex = 0;
+
   final List<Widget> _pages = const [
     HomePage(),
     ExplorePage(),
@@ -22,13 +25,12 @@ class AppRootNotifier extends ChangeNotifier {
     Icons.settings_outlined
   ];
 
-  int _selectIndex = 0;
 
   int get selectIndex => _selectIndex;
 
   void setIndex(int selectIndex) {
     _selectIndex = selectIndex;
-    notifyListeners();
+    rebuildUi();
   }
 
   Widget getPage(int selectIndex) {
