@@ -11,12 +11,12 @@ class FavouriteVm extends BaseViewModel {
   void addToFavoriteBook(Book book) {
     if (!favoriteBooks.contains(book)) {
       favoriteBooks.add(book);
-      notifyListeners();
+      rebuildUi();
     }
   }
 
   void removeBook(Book book) {
     favoriteBooks.removeWhere((e) => e.id == book.id);
-    notifyListeners();
+    rebuildUi();
   }
 }

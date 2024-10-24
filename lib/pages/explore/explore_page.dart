@@ -40,7 +40,7 @@ class ExplorePage extends StackedView<ExploreVm> {
       body: viewModel.isLoading
           ? const Center(
               child: CircularProgressIndicator(
-                color: AppColors.primaryD,
+                color: AppColors.textColor,
               ),
             )
           : viewModel.searchBooks.isEmpty

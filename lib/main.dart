@@ -1,13 +1,8 @@
-import 'package:book_app/notifiers/app_pdf_notifier.dart';
-import 'package:book_app/notifiers/app_root_notifier.dart';
-import 'package:book_app/notifiers/app_setting_notifier.dart';
 import 'package:book_app/pages/auth/login_page.dart';
-import 'package:book_app/pages/root_page.dart';
 import 'package:book_app/resources/app_colors.dart';
 import 'package:book_app/themes/theme_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -15,12 +10,7 @@ void main() {
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark,
   ));
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<AppSettingNotifier>(
-        create: (_) => AppSettingNotifier()),
-    ChangeNotifierProvider<AppPdfNotifier>(
-        create: (context) => AppPdfNotifier()),
-  ], child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +28,7 @@ class MyApp extends StatelessWidget {
             elevation: 0,
             titleTextStyle: TextStyle(color: Colors.black, fontSize: 22),
           )),
-      home: const RootPage(),
+      home: const LoginPage(),
     );
   }
 }

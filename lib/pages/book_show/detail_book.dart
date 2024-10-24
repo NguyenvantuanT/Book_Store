@@ -1,6 +1,5 @@
 import 'package:book_app/components/app_button.dart';
 import 'package:book_app/models/book_model.dart';
-import 'package:book_app/pages/book_show/pdf_screen.dart';
 import 'package:book_app/pages/home/widgets/app_image_book.dart';
 import 'package:book_app/pages/setting/favourite_vm.dart';
 import 'package:book_app/resources/app_colors.dart';
@@ -110,7 +109,7 @@ class DetailBook extends StatelessWidget {
         children: [
           AppButton(
             text: "VIEW ONLINE",
-            onTap: () => _openPdfViewer(context),
+            onTap: () {},
           ),
           _FavoriteButton(book: book),
         ],
@@ -118,12 +117,12 @@ class DetailBook extends StatelessWidget {
     );
   }
 
-  void _openPdfViewer(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const PdfScreen()),
-    );
-  }
+  // void _openPdfViewer(BuildContext context) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => const PdfScreen()),
+  //   );
+  // }
 
   Widget _buildDetailsSection(BuildContext context) {
     return Column(
@@ -157,44 +156,6 @@ class DetailBook extends StatelessWidget {
     );
   }
 }
-
-// class _BookCoverImage extends StatelessWidget {
-//   const _BookCoverImage({required this.imageUrl});
-//   final String imageUrl;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: MediaQuery.of(context).size.height / 4,
-//       width: MediaQuery.of(context).size.width / 3,
-//       decoration: BoxDecoration(
-//         color: AppColors.bgColor,
-//         borderRadius: BorderRadius.circular(20),
-//         boxShadow: const [
-//           BoxShadow(
-//             color: AppColors.shadow,
-//             offset: Offset(3.0, 3.0),
-//             blurRadius: 6.0,
-//           )
-//         ],
-//       ),
-//       child: ClipRRect(
-//         borderRadius: BorderRadius.circular(20),
-//         child: Image.network(
-//           imageUrl,
-//           fit: BoxFit.cover,
-//           width: double.infinity,
-//           errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.error)),
-//           loadingBuilder: (_, child, loadingProgress) {
-//             return loadingProgress == null
-//                 ? child
-//                 : const Center(child: CircularProgressIndicator());
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class _PriceTag extends StatelessWidget {
   const _PriceTag({required this.price});
