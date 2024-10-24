@@ -20,7 +20,7 @@ class BookService implements ImplBookService {
     const base = AppConstants.baseBook;
     final uri = "$base?q=$query&startIndex=$startIndex&maxResults=$maxResults";
     try {
-      http.Response response = await http.get(Uri.parse(uri));
+      http.Response response = await httpLog.get(Uri.parse(uri));
       final data = jsonDecode(response.body);
       if (data['items'] == null) return [];
       return (data['items'] as List)
